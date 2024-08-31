@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { clearCart, removeSingleItem, selectCartItems, selectCartTotalPrice } from '../redux/cartSlice';
+import { clearCart, removeSingleItem, updateItemQuantity, selectCartItems, selectCartTotalPrice } from '../redux/cartSlice';
 import { Link } from 'react-router-dom';
 
 const Cart = () => {
@@ -10,6 +10,12 @@ const Cart = () => {
 
   const handleRemoveItem = (id, uniqueId) => {
     dispatch(removeSingleItem({ id, uniqueId }));
+  };
+
+  const handleQuantityChange = (id, uniqueId, newQuantity) => {
+    if (newQuantity > 0) {
+      dispatch(updateItemQuantity({ id, uniqueId, newQuantity }));
+    }
   };
 
   return (
@@ -35,9 +41,9 @@ const Cart = () => {
                   <div className="card-body text-light text-center text-md-start">
                     <h5 className='card-title'>{item.title}</h5>
                     <p className='card-text'>{item.description}</p>
-                    <div className='btn-group'>
+                    <div className='bu-main d-flex align-items-center'>
                       <button className='btn btn-primary my-1'>PKR {item.price}</button>
-                      <button className="btn btn-warning my-1">Buy Now</button>
+                      <button className="btn btn-warning my-1 mx-2">Buy Now</button>
                       <button
                         onClick={() => handleRemoveItem(item.id, item.uniqueId)}
                         className="btn btn-danger my-1"
@@ -45,13 +51,25 @@ const Cart = () => {
                         Remove
                       </button>
                     </div>
+                    <div className='d-flex justify-content-center align-items-center mt-2'>
+                      <label htmlFor={`quantity-${item.uniqueId}`} className='me-2'>Quantity:</label>
+                      <input
+                        type="number"
+                        id={`quantity-${item.uniqueId}`}
+                        value={item.quantity}
+                        min="1"
+                        className='form-control'
+                        style={{ width: '80px',height:"30px" }}
+                        onChange={(e) => handleQuantityChange(item.id, item.uniqueId, parseInt(e.target.value))}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           ))}
           <div className='text-center mt-4'>
-            <h3>Total Price: PKR {totalPrice}</h3>
+            <h3 className='prize'>Total Price: PKR {totalPrice}</h3>
             <button onClick={() => dispatch(clearCart())} className="btn btn-warning mt-3 mb-3">
               Clear Cart
             </button>

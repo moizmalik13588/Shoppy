@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import logo_light from '../assets/logo-black.png';
@@ -8,14 +8,13 @@ import toggle_dark from '../assets/day.png';
 import { selectCartItems } from '../redux/cartSlice';
 
 const NavBar = ({ theme, setTheme }) => {
-  // State to track the active category
   const [activeCategory, setActiveCategory] = useState('');
+  const cartItems = useSelector(selectCartItems);
+  const [showCartButton, setShowCartButton] = useState(false);
 
   const toggle_mode = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
-
-  const cartItem = useSelector(selectCartItems);
 
   const menuToggle = () => {
     const menuItems = document.getElementById("menu-options");
@@ -26,10 +25,17 @@ const NavBar = ({ theme, setTheme }) => {
     }
   };
 
-  // Function to handle link click and set the active category
   const handleLinkClick = (category) => {
     setActiveCategory(category);
   };
+
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      setShowCartButton(true);
+    } else {
+      setShowCartButton(false);
+    }
+  }, [cartItems]);
 
   return (
     <div className={`navbar sticky-top ${theme}`}>
@@ -38,7 +44,7 @@ const NavBar = ({ theme, setTheme }) => {
           to="/" 
           className="left" 
           style={{ textDecoration: 'none', color: 'inherit' }}
-          onClick={() => setActiveCategory('')}  // Reset active category on "Shoppy" click
+          onClick={() => setActiveCategory('')}
         >
           <h3>Shoppy</h3>
         </Link>
@@ -91,12 +97,15 @@ const NavBar = ({ theme, setTheme }) => {
         />
 
         <Link to="/cart">
-          <button type="button" className="btn btn-primary position-relative ms-3">
+          <button
+            type="button"
+            className={`btn btn-primary position-relative ms-3 cart-button ${showCartButton ? 'show' : ''}`}
+          >
             <span className="material-symbols-outlined">
               shopping_bag
             </span>
             <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-              {cartItem.length}
+              {cartItems.length}
               <span className="visually-hidden">unread messages</span>
             </span>
           </button>

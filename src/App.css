@@ -62,7 +62,10 @@ html, body{
   transition: 0.3s;
   width: 100%;
 }
+.prize {
+  color: #007bff;
 
+}
 .containr.dark {
   background-color: #131313;
 }
@@ -223,6 +226,14 @@ html, body{
   margin-top: 0.4rem !important;
 
 }
+.alert {
+  background-color: #28a745;
+  color: #fff; 
+  border: none;
+  padding: 10px; 
+  border-radius: 5px; 
+  margin-bottom: 10px; 
+}
 
 @media (max-width: 768px) {
   .container .mb-5 {
@@ -263,6 +274,19 @@ html, body{
   #shop .material-symbols-outlined {
     font-size: 1.25rem;
   }
+  .bu-main .btn{
+    font-size: 0.7rem;
+  }
+ 
+}
+@media (max-width: 768px) {
+  .cart-button {
+    display: none;
+  }
+  .cart-button.show {
+    display: inline-block;
+  }
+ 
 }
 
 

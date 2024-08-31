@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Products } from '../data';
@@ -9,9 +9,20 @@ const Product = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
 
+  const [message, setMessage] = useState('');
+
   const handleAddToCart = (item) => {
-    const uniqueId = '_' + Math.random().toString(36).substr(2, 9);
-    dispatch(addToCart({ ...item, uniqueId }));
+    const itemInCart = cartItems.find(cartItem => cartItem.id === item.id);
+
+    if (itemInCart) {
+      setMessage("Item already added to the cart!!!");
+      setTimeout(() => setMessage(''), 3000); 
+    } else {
+      const uniqueId = '_' + Math.random().toString(36).substr(2, 9);
+      dispatch(addToCart({ ...item, uniqueId}));
+      setMessage("Item added to the cart!!!");
+      setTimeout(() => setMessage(''), 3000);  
+    }
   };
 
   const filteredProducts = category
@@ -19,13 +30,14 @@ const Product = () => {
     : Products;
 
   return (
-    <div className="container my-5">
+    <div className="container my-3">
+      {message && <div className="alert alert-info text-center sticky-top">{message}</div>}
       <div className="row">
-        {filteredProducts.map(item => (
-          <div key={item.id} className='col-md-6 col-lg-4 mb-5'>
+        {filteredProducts.map((item, index) => (
+          <div key={`${item.id}-${index}`} className='col-md-6 col-lg-4 mb-5'>
             <div className='card bg-dark' style={{ width: '18rem' }}>
               <div className='p-3 d-flex justify-content-center align-items-center'>
-                <img src={item.imgSrc} className='card-img-top' alt='...' style={{ width: '200px', height: '200px', borderRadius: '10px' }} />
+                <img src={item.imgSrc} className='card-img-top' alt={item.title} style={{ width: '200px', height: '200px', borderRadius: '10px' }} />
               </div>
               <div className='card-body text-light text-center'>
                 <h5 className='card-title'>{item.title}</h5>
@@ -37,6 +49,7 @@ const Product = () => {
           </div>
         ))}
       </div>
+
     </div>
   );
 };
