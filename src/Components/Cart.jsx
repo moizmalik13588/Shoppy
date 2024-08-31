@@ -57,7 +57,7 @@ const Cart = () => {
                         type="number"
                         id={`quantity-${item.uniqueId}`}
                         value={item.quantity}
-                        min="1"
+                        min="0"
                         className='form-control'
                         style={{ width: '80px',height:"30px" }}
                         onChange={(e) => handleQuantityChange(item.id, item.uniqueId, parseInt(e.target.value))}
