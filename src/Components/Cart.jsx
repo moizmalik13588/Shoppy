@@ -18,6 +18,16 @@ const Cart = () => {
     }
   };
 
+  const incrementQuantity = (item) => {
+    handleQuantityChange(item.id, item.uniqueId, item.quantity + 1);
+  };
+
+  const decrementQuantity = (item) => {
+    if (item.quantity > 1) {
+      handleQuantityChange(item.id, item.uniqueId, item.quantity - 1);
+    }
+  };
+
   return (
     <div className='container my-5'>
       {cartItems.length === 0 ? (
@@ -53,15 +63,29 @@ const Cart = () => {
                     </div>
                     <div className='d-flex justify-content-center align-items-center mt-2'>
                       <label htmlFor={`quantity-${item.uniqueId}`} className='me-2'>Quantity:</label>
+                      <button
+                        onClick={() => decrementQuantity(item)}
+                        className='btn btn-secondary'
+                        style={{ padding: '0 10px' }}
+                      >
+                        -
+                      </button>
                       <input
-                        type="number"
+                        type=""
                         id={`quantity-${item.uniqueId}`}
                         value={item.quantity}
-                        min="0"
-                        className='form-control'
-                        style={{ width: '80px',height:"30px" }}
+                        min="1"
+                        className='form-control text-center mx-2'
+                        style={{ width: '60px', height: '30px' }}
                         onChange={(e) => handleQuantityChange(item.id, item.uniqueId, parseInt(e.target.value))}
                       />
+                      <button
+                        onClick={() => incrementQuantity(item)}
+                        className='btn btn-secondary'
+                        style={{ padding: '0 10px' }}
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
                 </div>
