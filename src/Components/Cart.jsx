@@ -41,7 +41,7 @@ const Cart = () => {
                   <div className="card-body text-light text-center text-md-start">
                     <h5 className='card-title'>{item.title}</h5>
                     <p className='card-text'>{item.description}</p>
-                    <div className='bu-main d-flex align-items-center'>
+                    <div className='bu-main d-flex justify-content-center align-items-center'>
                       <button className='btn btn-primary my-1'>PKR {item.price}</button>
                       <button className="btn btn-warning my-1 mx-2">Buy Now</button>
                       <button
